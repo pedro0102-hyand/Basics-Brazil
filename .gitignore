@@ -1,0 +1,53 @@
+# Dependências
+node_modules/
+**/node_modules/
+
+# Build / dist
+dist/
+build/
+**/dist/
+**/build/
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+logs/
+
+# Uploads de imagens (arquivos gerados pelo usuário, não versionados)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Banco de dados local / volumes
+*.sqlite
+*.sqlite3
+postgres-data/
+
+# Editor / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Testes / cobertura
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+.turbo/
+.eslintcache
+
+# Docker
+docker-compose.override.yml
+
+PLANEJAMENTO.md
