@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import pool from './config/database';
 import authRoutes from './routes/authRoutes';
+import productRoutes from './routes/productRoutes';
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 app.use('/auth', authRoutes);
-
+app.use('/products', productRoutes);
 app.get('/', (req, res) => {
   res.send('API do e-commerce está no ar 🚀');
 });
