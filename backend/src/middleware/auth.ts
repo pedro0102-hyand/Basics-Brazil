@@ -28,3 +28,12 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
     return res.status(401).json({ message: 'Token inválido ou expirado.' });
   }
 };
+
+export const authorize = (...allowedRoles: Array<'customer' | 'admin'>) => {
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Acesso negado.' });
+    }
+    next();
+  };
+};
