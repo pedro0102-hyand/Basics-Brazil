@@ -85,3 +85,82 @@ export const createProduct = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: (error as Error).message });
   }
 };
+
+export const updateProduct = async (req: AuthRequest, res: Response) => {
+  const { id } = req.params;
+  const { name, description, price, stock_quantity, category, size, color, weight_kg, is_active } = req.body;
+
+  try {
+    const existing = await pool.query('SELECT id FROM products WHERE id = $1', [id]);
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ message: 'Produto não encontrado.' });
+    }
+
+    const result = await pool.query(
+      `UPDATE products SET
+        name = COALESCE($1, name),
+        description = COALESCE($2, description),
+        price = COALESCE($3, price),
+        stock_quantity = COALESCE($4, stock_quantity),
+        category = COALESCE($5, category),
+        size = COALESCE($6, size),
+        color = COALESCE($7, color),
+        weight_kg = COALESCE($8, weight_kg),
+        is_active = COALESCE($9, is_active)
+       WHERE id = $10
+       RETURNING *`,
+      [name, description, price, stock_quantity, category, size, color, weight_kg, is_active, id]
+    );
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
+
+export const deleteProduct = async (req: AuthRequest, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query(
+      'UPDATE products SET is_active = FALSE WHERE id = $1 RETURNING id',
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Produto não encontrado.' });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
+
+export const addProductImage = async (req: AuthRequest, res: Response) => {
+  const { id } = req.params;
+
+  if (!req.file) {
+    return res.status(400).json({ message: 'Nenhuma imagem enviada.' });
+  }
+
+  try {
+    const productExists = await pool.query('SELECT id FROM products WHERE id = $1', [id]);
+    if (productExists.rows.length === 0) {
+      return res.status(404).json({ message: 'Produto não encontrado.' });
+    }
+
+    const imageUrl = `/uploads/${req.file.filename}`;
+
+    const result = await pool.query(
+      `INSERT INTO product_images (product_id, image_url, is_primary)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [id, imageUrl, false]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
