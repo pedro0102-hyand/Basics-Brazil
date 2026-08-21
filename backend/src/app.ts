@@ -8,6 +8,8 @@ import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 import cartRoutes from './routes/cartRoutes';
 import shippingRoutes from './routes/shippingRoutes';
+import reviewRoutes from './routes/reviewRoutes';
+import commentRoutes from './routes/commentRoutes';
 
 // Create an instance of the Express application
 const app = express();
@@ -21,6 +23,8 @@ app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/cart', cartRoutes);
 app.use('/shipping', shippingRoutes);
+app.use('/products/:id/reviews', reviewRoutes);
+app.use('/products/:id/comments', require('./routes/commentRoutes').default);
 
 // Health check endpoint
 app.get('/', (req, res) => {
