@@ -6,6 +6,7 @@ import path from 'path';
 import pool from './config/database';
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
+import cartRoutes from './routes/cartRoutes';
 
 // Create an instance of the Express application
 const app = express();
@@ -17,12 +18,12 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
+app.use('/cart', cartRoutes);
 
 // Health check endpoint
 app.get('/', (req, res) => {
   res.send('API do e-commerce está no ar 🚀');
 });
-
 
 // Health check endpoint for database connection
 app.get('/health/db', async (req, res) => {
