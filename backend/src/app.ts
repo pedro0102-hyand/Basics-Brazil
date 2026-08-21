@@ -7,6 +7,7 @@ import pool from './config/database';
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 import cartRoutes from './routes/cartRoutes';
+import shippingRoutes from './routes/shippingRoutes';
 
 // Create an instance of the Express application
 const app = express();
@@ -19,6 +20,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/cart', cartRoutes);
+app.use('/shipping', shippingRoutes);
 
 // Health check endpoint
 app.get('/', (req, res) => {
