@@ -4,6 +4,7 @@ import pool from '../config/database';
 import { generateAccessToken } from '../utils/jwt';
 import { AuthRequest } from '../middleware/auth';
 
+// Register a new user
 export const register = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
@@ -32,6 +33,7 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
+// Login an existing user
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -68,6 +70,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
+// Get the authenticated user's information
 export const me = async (req: AuthRequest, res: Response) => {
   try {
     const result = await pool.query(

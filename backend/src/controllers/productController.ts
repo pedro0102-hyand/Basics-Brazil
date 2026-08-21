@@ -1,7 +1,10 @@
+// CRUD dos produtos
+
 import { Request, Response } from 'express';
 import pool from '../config/database';
 import { AuthRequest } from '../middleware/auth';
 
+// Get all products with optional filtering by category and search term
 export const getProducts = async (req: Request, res: Response) => {
   const { category, search } = req.query;
 
@@ -28,6 +31,7 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
+// Get a single product by ID, including its images
 export const getProductById = async (req: Request, res: Response) => {
   const { id } = req.params;
 
@@ -55,6 +59,7 @@ export const getProductById = async (req: Request, res: Response) => {
   }
 };
 
+// Create a new product
 export const createProduct = async (req: AuthRequest, res: Response) => {
   const { name, description, price, stock_quantity, category, size, color, weight_kg } = req.body;
 
