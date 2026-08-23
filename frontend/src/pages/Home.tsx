@@ -24,11 +24,14 @@ const Home = () => {
     const delayDebounce = setTimeout(fetchProducts, 400);
     return () => clearTimeout(delayDebounce);
   }, [search]);
-
   return (
-    <div className="container py-5">
-      <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-        <h1 className="h3 mb-0">Nossa Coleção</h1>
+    <div className="container py-5 py-md-6">
+      <div className="text-center mb-5">
+        <h1 className="display-6 mb-2">Nossa Coleção</h1>
+        <p className="text-secondary">Peças essenciais para o seu dia a dia</p>
+      </div>
+
+      <div className="d-flex justify-content-end mb-4">
         <input
           type="text"
           className="form-control"

@@ -121,7 +121,7 @@ const ProductDetail = () => {
 
         <div className="col-md-6">
           <p className="text-uppercase small text-secondary mb-1">{product.category}</p>
-          <h1 className="h3 mb-2">{product.name}</h1>
+          <h1 className="h2 mb-2">{product.name}</h1>
 
           {reviewsData && reviewsData.total_reviews > 0 && (
             <div className="d-flex align-items-center gap-2 mb-3">
@@ -138,7 +138,9 @@ const ProductDetail = () => {
             </div>
           )}
 
-          <p className="h4 mb-4">R$ {parseFloat(product.price).toFixed(2).replace('.', ',')}</p>
+          <p className="h4 mb-4" style={{ fontFamily: 'var(--font-body)', fontWeight: 600 }}>
+  R$ {parseFloat(product.price).toFixed(2).replace('.', ',')}
+</p>
 
           <p className="text-body-secondary mb-4">{product.description}</p>
 
