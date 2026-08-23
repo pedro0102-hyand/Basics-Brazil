@@ -38,6 +38,11 @@ const Navbar = () => {
 
           {user ? (
             <div className="d-flex align-items-center gap-2">
+              {user.role === 'admin' && (
+                <Link className="btn btn-sm btn-outline-secondary" to="/admin/products">
+                  Admin
+                </Link>
+              )}
               <PersonCircle size={20} />
               <span className="small">{user.name}</span>
               <button className="btn btn-sm btn-outline-danger" onClick={logout}>
