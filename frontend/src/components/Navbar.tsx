@@ -15,7 +15,7 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg sticky-top bg-body-tertiary border-bottom">
       <div className="container">
         <Link className="navbar-brand fw-bold" to="/">
-          Loja Minimalista
+          Basics Brazil
         </Link>
 
         <div className="d-flex align-items-center gap-3 ms-auto">
@@ -23,7 +23,12 @@ const Navbar = () => {
             Sobre Nós
           </Link>
 
-          <button className="btn btn-sm btn-outline-secondary" onClick={toggleTheme}>
+          <button
+            className="btn btn-sm btn-outline-secondary theme-toggle"
+            onClick={toggleTheme}
+            aria-label={theme === 'light' ? 'Ativar modo escuro' : 'Ativar modo claro'}
+            title={theme === 'light' ? 'Modo escuro' : 'Modo claro'}
+          >
             {theme === 'light' ? <Moon /> : <Sun />}
           </button>
 

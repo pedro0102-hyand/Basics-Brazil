@@ -78,6 +78,20 @@ a:hover {
   font-size: 1.25rem;
 }
 
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(12deg);
+}
+
 /* Cards de produto */
 .card {
   background-color: var(--color-surface);
@@ -112,6 +126,125 @@ a:hover {
 .form-select:focus {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 0.15rem rgba(0, 0, 0, 0.06);
+}
+
+/* Login */
+.login-page {
+  min-height: calc(100vh - 190px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.login-card {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border) !important;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(28, 30, 26, 0.07) !important;
+}
+
+.login-card h1 {
+  font-family: var(--font-body);
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.login-card .form-label {
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.login-card .form-control {
+  border-radius: 6px;
+  min-height: 44px;
+  padding: 0.6rem 0.8rem;
+}
+
+.login-card .btn-primary {
+  background-color: #2c2c2c;
+  border-color: #2c2c2c;
+  border-radius: 6px;
+  color: #ffffff;
+  min-height: 44px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.login-card .btn-primary:hover,
+.login-card .btn-primary:focus {
+  background-color: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #ffffff;
+}
+
+[data-bs-theme='dark'] .login-card .btn-primary {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+[data-bs-theme='dark'] .login-card .btn-primary:hover,
+[data-bs-theme='dark'] .login-card .btn-primary:focus {
+  background-color: #111111;
+  border-color: #111111;
+  color: #ffffff;
+}
+
+[data-bs-theme='dark'] .navbar .btn-primary {
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
+}
+
+[data-bs-theme='dark'] .navbar .btn-primary:hover,
+[data-bs-theme='dark'] .navbar .btn-primary:focus {
+  background-color: #111111;
+  border-color: #111111;
+  color: #ffffff;
+}
+
+.password-field { position: relative; }
+
+.password-field .form-control { padding-right: 3rem; }
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-secondary);
+  transform: translateY(-50%);
+}
+
+.password-toggle:hover,
+.password-toggle:focus { color: var(--color-text); }
+
+.login-card .alert-danger {
+  border-radius: 0;
+  font-size: 0.85rem;
+}
+
+.login-card a {
+  color: var(--color-accent-hover);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.login-card a:hover { text-decoration: underline; }
+
+@media (max-width: 575px) {
+  .login-page { min-height: calc(100vh - 150px); padding: 2rem 1rem; }
+  .login-card { padding: 1.75rem 1.25rem !important; }
 }
 
 /* Footer */
