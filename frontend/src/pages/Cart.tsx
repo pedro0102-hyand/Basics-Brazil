@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Trash } from 'react-bootstrap-icons';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 const Cart = () => {
   const { items, updateQuantity, removeItem } = useCart();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const subtotal = items.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
 
@@ -86,8 +87,8 @@ const Cart = () => {
                 <span>R$ {subtotal.toFixed(2).replace('.', ',')}</span>
               </div>
               <p className="small text-secondary mb-3">Frete calculado no checkout</p>
-              <button className="btn btn-primary w-100" disabled>
-                Finalizar Compra (em breve)
+              <button className="btn btn-primary w-100" onClick={() => navigate('/checkout')}>
+                Finalizar Compra
               </button>
             </div>
           </div>
