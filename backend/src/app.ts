@@ -10,28 +10,29 @@ import cartRoutes from './routes/cartRoutes';
 import shippingRoutes from './routes/shippingRoutes';
 import reviewRoutes from './routes/reviewRoutes';
 import commentRoutes from './routes/commentRoutes';
+import orderRoutes from './routes/orderRoutes';
 
-// Create an instance of the Express application
 const app = express();
 
 app.use(cors());
 app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(morgan('dev'));
 app.use(express.json());
+
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
+app.use('/products/:id/reviews', reviewRoutes);
+app.use('/products/:id/comments', commentRoutes);
 app.use('/cart', cartRoutes);
 app.use('/shipping', shippingRoutes);
-app.use('/products/:id/reviews', reviewRoutes);
-app.use('/products/:id/comments', require('./routes/commentRoutes').default);
+app.use('/orders', orderRoutes);
 
-// Health check endpoint
 app.get('/', (req, res) => {
   res.send('API do e-commerce está no ar 🚀');
 });
 
-// Health check endpoint for database connection
 app.get('/health/db', async (req, res) => {
   try {
     const result = await pool.query('SELECT NOW()');
