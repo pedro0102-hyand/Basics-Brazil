@@ -1,11 +1,16 @@
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useAuth } from '../context/AuthContext';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
@@ -14,6 +19,12 @@ const Register = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (password !== confirmPassword) {
+      setError('As senhas não coincidem.');
+      return;
+    }
+
     setLoading(true);
     try {
       await register(name, email, password);
@@ -26,8 +37,8 @@ const Register = () => {
   };
 
   return (
-    <div className="container py-5" style={{ maxWidth: '420px' }}>
-      <div className="card border-0 shadow-sm p-4 p-md-5">
+    <div className="container login-page" style={{ maxWidth: '420px' }}>
+      <div className="card login-card border-0 shadow-sm p-4 p-md-5">
         <h1 className="h3 mb-4 text-center">Criar Conta</h1>
 
         <form onSubmit={handleSubmit}>
@@ -55,16 +66,50 @@ const Register = () => {
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <label className="form-label">Senha</label>
-            <input
-              type="password"
-              className="form-control"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-            />
+            <div className="password-field">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword((visible) => !visible)}
+                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                title={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+              >
+                {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label className="form-label">Confirmar senha</label>
+            <div className="password-field">
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                className="form-control"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                minLength={6}
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowConfirmPassword((visible) => !visible)}
+                aria-label={showConfirmPassword ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'}
+                title={showConfirmPassword ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'}
+              >
+                {showConfirmPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
           <button type="submit" className="btn btn-primary w-100" disabled={loading}>
