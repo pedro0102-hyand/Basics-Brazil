@@ -169,3 +169,18 @@ export const addProductImage = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: (error as Error).message });
   }
 };
+
+export const getCategories = async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(
+      `SELECT category, COUNT(*) AS count
+       FROM products
+       WHERE is_active = TRUE
+       GROUP BY category
+       ORDER BY category`
+    );
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
