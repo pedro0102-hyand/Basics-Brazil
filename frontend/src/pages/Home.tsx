@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
-import type { Product } from '../types/product';
+import type { Product } from '../types/products';
 import ProductCard from '../components/ProductCard';
 import CategoryFilter from '../components/CategoryFilter';
 
@@ -40,10 +40,11 @@ const Home = () => {
   }, [search, selectedCategory]);
 
   return (
-    <div className="container py-5">
-      <div className="text-center mb-5">
+    <div className="container page-shell">
+      <div className="page-heading text-center">
+        <p className="eyebrow mb-2">Basics Brazil</p>
         <h1 className="display-6 mb-2">Nossa Coleção</h1>
-        <p className="text-secondary">Peças essenciais para o seu dia a dia</p>
+        <p className="text-secondary mb-0">Peças essenciais para o seu dia a dia</p>
       </div>
 
       <div className="row">
@@ -72,7 +73,7 @@ const Home = () => {
           ) : products.length === 0 ? (
             <p className="text-secondary">Nenhum produto encontrado.</p>
           ) : (
-            <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 product-grid">
               {products.map((product) => (
                 <div className="col" key={product.id}>
                   <ProductCard product={product} />

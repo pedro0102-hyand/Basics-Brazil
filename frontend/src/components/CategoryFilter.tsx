@@ -11,7 +11,7 @@ interface CategoryFilterProps {
 
 const CategoryFilter = ({ categories, selected, onSelect }: CategoryFilterProps) => {
   return (
-    <div className="mb-4">
+    <div className="category-filter mb-4">
       <h2 className="h6 text-uppercase text-secondary mb-3" style={{ letterSpacing: '0.05em' }}>
         Categorias
       </h2>

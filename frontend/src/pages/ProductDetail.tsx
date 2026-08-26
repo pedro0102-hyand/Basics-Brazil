@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { StarFill, Star } from 'react-bootstrap-icons';
 import api from '../services/api';
-import type { Product } from '../types/product';
+import type { Product } from '../types/products';
 import type { ReviewsResponse, Comment } from '../types/review';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -84,19 +84,21 @@ const ProductDetail = () => {
     }
   };
 
-  if (loading) return <div className="container py-5">Carregando...</div>;
-  if (!product) return <div className="container py-5">Produto não encontrado.</div>;
+  if (loading) return <div className="container page-shell">Carregando...</div>;
+  if (!product) return <div className="container page-shell">Produto não encontrado.</div>;
 
   return (
-    <div className="container py-5">
+    <div className="container page-shell product-detail">
       <div className="row g-5">
         <div className="col-md-6">
+          <div className="product-image-frame">
           <img
             src={selectedImage || 'https://placehold.co/500x500?text=Sem+imagem'}
             alt={product.name}
             className="img-fluid rounded"
             style={{ aspectRatio: '1 / 1', objectFit: 'cover', width: '100%' }}
           />
+          </div>
           {product.images && product.images.length > 1 && (
             <div className="d-flex gap-2 mt-3">
               {product.images.map((img) => (
@@ -121,7 +123,7 @@ const ProductDetail = () => {
 
         <div className="col-md-6">
           <p className="text-uppercase small text-secondary mb-1">{product.category}</p>
-          <h1 className="h2 mb-2">{product.name}</h1>
+          <h1 className="display-6 mb-2">{product.name}</h1>
 
           {reviewsData && reviewsData.total_reviews > 0 && (
             <div className="d-flex align-items-center gap-2 mb-3">
@@ -151,7 +153,7 @@ const ProductDetail = () => {
             </div>
           )}
 
-          <div className="d-flex align-items-center gap-3 mb-3">
+          <div className="d-flex align-items-center gap-3 mb-3 product-buy-row">
             <input
               type="number"
               className="form-control"
@@ -178,11 +180,11 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      <hr className="my-5" />
+      <hr className="section-rule my-5" />
 
       <div className="row g-5">
         <div className="col-md-6">
-          <h2 className="h5 mb-3">Avaliações</h2>
+          <h2 className="h5 section-title mb-3">Avaliações</h2>
 
           <div className="mb-4">
             <p className="small mb-1">Sua avaliação:</p>
@@ -220,7 +222,7 @@ const ProductDetail = () => {
         </div>
 
         <div className="col-md-6">
-          <h2 className="h5 mb-3">Comentários</h2>
+          <h2 className="h5 section-title mb-3">Comentários</h2>
 
           <div className="mb-4">
             <textarea

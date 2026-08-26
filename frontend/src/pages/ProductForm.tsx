@@ -1,4 +1,5 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
@@ -73,10 +74,11 @@ const ProductForm = () => {
   };
 
   return (
-    <div className="container py-5" style={{ maxWidth: '560px' }}>
-      <h1 className="h3 mb-4">{isEditing ? 'Editar Produto' : 'Novo Produto'}</h1>
+    <div className="container page-shell product-form-page">
+      <p className="eyebrow mb-2">Catálogo</p>
+      <h1 className="display-6 mb-4">{isEditing ? 'Editar Produto' : 'Novo Produto'}</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-surface">
         <div className="mb-3">
           <label className="form-label">Nome</label>
           <input className="form-control" value={name} onChange={(e) => setName(e.target.value)} required />

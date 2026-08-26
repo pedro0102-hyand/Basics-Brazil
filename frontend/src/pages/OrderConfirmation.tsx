@@ -32,18 +32,18 @@ const OrderConfirmation = () => {
     });
   }, [id]);
 
-  if (loading) return <div className="container py-5">Carregando...</div>;
-  if (!order) return <div className="container py-5">Pedido não encontrado.</div>;
+  if (loading) return <div className="container page-shell">Carregando...</div>;
+  if (!order) return <div className="container page-shell">Pedido não encontrado.</div>;
 
   return (
-    <div className="container py-5" style={{ maxWidth: '560px' }}>
+    <div className="container page-shell confirmation-page">
       <div className="text-center mb-4">
         <CheckCircle size={48} className="text-success mb-3" />
         <h1 className="h3 mb-1">Pedido Confirmado!</h1>
         <p className="text-secondary">Pedido #{order.id} — {order.status === 'paid' ? 'Pago' : order.status}</p>
       </div>
 
-      <div className="card border-0 shadow-sm p-4">
+      <div className="card summary-card border-0 shadow-sm p-4">
         <h2 className="h6 mb-3">Itens</h2>
         <ul className="list-unstyled mb-3">
           {order.items.map((item, i) => (

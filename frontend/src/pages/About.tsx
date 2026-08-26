@@ -1,8 +1,9 @@
 const About = () => {
   return (
-    <div className="container py-5" style={{ maxWidth: '720px' }}>
-      <h1 className="h3 mb-4">Sobre Nós</h1>
-      <p className="text-body-secondary">
+    <div className="container page-shell about-page">
+      <p className="eyebrow mb-2">Nossa história</p>
+      <h1 className="display-6 mb-4">Sobre Nós</h1>
+      <p className="lead text-body-secondary">
         Somos uma loja dedicada ao essencial. Acreditamos que menos é mais: peças básicas,
         atemporais e de qualidade, pensadas para compor um guarda-roupa funcional e sem excessos.
       </p>

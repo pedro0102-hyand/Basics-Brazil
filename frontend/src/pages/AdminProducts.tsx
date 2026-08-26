@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PencilSquare, Trash, PlusCircle } from 'react-bootstrap-icons';
 import api from '../services/api';
-import type { Product } from '../types/product';
+import type { Product } from '../types/products';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -26,9 +26,12 @@ const AdminProducts = () => {
   };
 
   return (
-    <div className="container py-5">
+    <div className="container page-shell admin-page">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="h3 mb-0">Gerenciar Produtos</h1>
+        <div>
+          <p className="eyebrow mb-2">Painel de controle</p>
+          <h1 className="display-6 mb-0">Gerenciar Produtos</h1>
+        </div>
         <Link to="/admin/products/new" className="btn btn-primary d-flex align-items-center gap-2">
           <PlusCircle /> Novo Produto
         </Link>
@@ -37,7 +40,7 @@ const AdminProducts = () => {
       {loading ? (
         <p>Carregando...</p>
       ) : (
-        <div className="table-responsive">
+        <div className="table-responsive admin-table-wrap">
           <table className="table align-middle">
             <thead>
               <tr>

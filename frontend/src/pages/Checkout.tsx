@@ -1,4 +1,5 @@
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useCart } from '../context/CartContext';
@@ -51,14 +52,18 @@ const Checkout = () => {
   };
 
   if (items.length === 0) {
-    return <div className="container py-5 text-center">Seu carrinho está vazio.</div>;
+    return <div className="container page-shell empty-state text-center">Seu carrinho está vazio.</div>;
   }
 
   return (
-    <div className="container py-5" style={{ maxWidth: '560px' }}>
-      <h1 className="h3 mb-4 text-center">Finalizar Compra</h1>
+    <div className="container page-shell checkout-page">
+      <div className="checkout-heading text-center">
+        <p className="eyebrow mb-2">Última etapa</p>
+        <h1 className="display-6 mb-2">Finalizar Compra</h1>
+        <p className="text-secondary mb-0">Confira a entrega e confirme seu pedido.</p>
+      </div>
 
-      <div className="card border-0 shadow-sm p-4">
+      <div className="card summary-card border-0 shadow-sm p-4">
         {error && <div className="alert alert-danger py-2">{error}</div>}
 
         <h2 className="h6 mb-3">Endereço de Entrega</h2>

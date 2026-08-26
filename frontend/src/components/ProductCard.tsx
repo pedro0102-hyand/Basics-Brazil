@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import type { Product } from '../types/product';
+import type { Product } from '../types/products';
 
 interface ProductCardProps {
   product: Product;
@@ -13,7 +13,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Link to={`/products/${product.id}`} className="text-decoration-none text-body">
-      <div className="card h-100 border-0 shadow-sm">
+      <div className="card product-card h-100 border-0 shadow-sm">
         <img
           src={imageUrl}
           alt={product.name}

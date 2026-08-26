@@ -12,7 +12,7 @@ const Cart = () => {
 
   if (!user) {
     return (
-      <div className="container py-5 text-center">
+      <div className="container page-shell empty-state text-center">
         <p>Você precisa estar logado para ver o carrinho.</p>
         <Link to="/login" className="btn btn-primary">
           Entrar
@@ -23,7 +23,7 @@ const Cart = () => {
 
   if (items.length === 0) {
     return (
-      <div className="container py-5 text-center">
+      <div className="container page-shell empty-state text-center">
         <p className="text-secondary">Seu carrinho está vazio.</p>
         <Link to="/" className="btn btn-primary">
           Ver produtos
@@ -33,13 +33,14 @@ const Cart = () => {
   }
 
   return (
-    <div className="container py-5">
-      <h1 className="h3 mb-4">Meu Carrinho</h1>
+    <div className="container page-shell cart-page">
+      <p className="eyebrow mb-2">Seu pedido</p>
+      <h1 className="display-6 mb-4">Meu Carrinho</h1>
 
       <div className="row g-5">
         <div className="col-md-8">
           {items.map((item) => (
-            <div key={item.cart_item_id} className="d-flex gap-3 align-items-center border-bottom pb-3 mb-3">
+            <div key={item.cart_item_id} className="cart-item d-flex gap-3 align-items-center border-bottom pb-3 mb-3">
               <img
                 src={
                   item.image_url
@@ -79,7 +80,7 @@ const Cart = () => {
         </div>
 
         <div className="col-md-4">
-          <div className="card border-0 shadow-sm">
+          <div className="card summary-card border-0 shadow-sm">
             <div className="card-body">
               <h2 className="h6 mb-3">Resumo</h2>
               <div className="d-flex justify-content-between mb-2">
