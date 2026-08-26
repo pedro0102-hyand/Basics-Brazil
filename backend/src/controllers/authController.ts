@@ -4,6 +4,8 @@ import pool from '../config/database';
 import { generateAccessToken } from '../utils/jwt';
 import { AuthRequest } from '../middleware/auth';
 
+const userFields = 'id, name, email, role, avatar_url, created_at';
+
 // Register a new user
 export const register = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -23,7 +25,7 @@ export const register = async (req: Request, res: Response) => {
     const result = await pool.query(
       `INSERT INTO users (name, email, password_hash)
        VALUES ($1, $2, $3)
-       RETURNING id, name, email, role, created_at`,
+      RETURNING id, name, email, role, avatar_url, created_at`,
       [name, email, passwordHash]
     );
 
@@ -63,6 +65,7 @@ export const login = async (req: Request, res: Response) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        avatar_url: user.avatar_url,
       },
     });
   } catch (error) {
@@ -74,8 +77,30 @@ export const login = async (req: Request, res: Response) => {
 export const me = async (req: AuthRequest, res: Response) => {
   try {
     const result = await pool.query(
-      'SELECT id, name, email, role, created_at FROM users WHERE id = $1',
+      `SELECT ${userFields} FROM users WHERE id = $1`,
       [req.user!.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ message: (error as Error).message });
+  }
+};
+
+export const uploadAvatar = async (req: AuthRequest, res: Response) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'Uma imagem é obrigatória.' });
+  }
+
+  try {
+    const avatarUrl = `/uploads/${req.file.filename}`;
+    const result = await pool.query(
+      `UPDATE users SET avatar_url = $1 WHERE id = $2 RETURNING ${userFields}`,
+      [avatarUrl, req.user!.id]
     );
 
     if (result.rows.length === 0) {

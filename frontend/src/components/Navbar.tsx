@@ -48,8 +48,14 @@ const Navbar = () => {
                   Admin
                 </Link>
               )}
-              <PersonCircle size={20} />
-              <span className="small">{user.name}</span>
+              <Link to="/profile" className="profile-nav-link" title="Meu perfil" aria-label="Meu perfil">
+                {user.avatar_url ? (
+                  <img src={`http://localhost:3001${user.avatar_url}`} alt="" className="profile-nav-avatar" />
+                ) : (
+                  <PersonCircle size={20} />
+                )}
+                <span className="small">{user.name}</span>
+              </Link>
               <button className="btn btn-sm btn-outline-danger" onClick={logout}>
                 Sair
               </button>
