@@ -7,15 +7,18 @@ import App from './App.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 import { CartProvider } from './context/CartContext.tsx'
 import { ThemeProvider } from './context/ThemeContext.tsx'
+import { LoadingProvider } from './context/LoadingContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
-      <AuthProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
-      </AuthProvider>
+      <LoadingProvider>
+        <AuthProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </AuthProvider>
+      </LoadingProvider>
     </ThemeProvider>
   </StrictMode>,
 )

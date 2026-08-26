@@ -13,11 +13,13 @@ import OrderConfirmation from './pages/OrderConfirmation';
 import AdminProducts from './pages/AdminProducts';
 import ProductForm from './pages/ProductForm';
 import Profile from './pages/Profile';
+import LoadingOverlay from './components/LoadingOverlay';
 
 function App() {
   return (
     <BrowserRouter>
       <div className="d-flex flex-column min-vh-100">
+        <LoadingOverlay />
         <Navbar />
         <main className="flex-grow-1">
           <Routes>
