@@ -11,10 +11,6 @@ const About = () => {
         Cada peça é selecionada com cuidado, priorizando tecidos confortáveis, cortes versáteis
         e uma paleta neutra que combina com qualquer ocasião.
       </p>
-      <p className="text-body-secondary mb-0">
-        Este projeto foi desenvolvido como um estudo full-stack, unindo React, Node.js,
-        TypeScript e PostgreSQL numa aplicação completa de e-commerce.
-      </p>
     </div>
   );
 };
