@@ -190,6 +190,15 @@ h1, h2, h3, .navbar-brand {
   border-color: var(--color-accent);
 }
 
+[data-bs-theme='dark'] .btn-primary {
+  color: var(--color-bg);
+}
+
+[data-bs-theme='dark'] .btn-primary:hover,
+[data-bs-theme='dark'] .btn-primary:focus {
+  color: var(--color-bg);
+}
+
 .text-primary {
   color: var(--color-accent) !important;
 }
