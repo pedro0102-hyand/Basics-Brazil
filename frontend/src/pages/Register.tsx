@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -15,13 +16,14 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
 
     if (password !== confirmPassword) {
-      setError('As senhas não coincidem.');
+      setError(t('passwordMismatch'));
       return;
     }
 
@@ -30,7 +32,7 @@ const Register = () => {
       await register(name, email, password);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao criar conta.');
+      setError(err.response?.data?.message || t('errorCreateAccount'));
     } finally {
       setLoading(false);
     }
@@ -39,13 +41,13 @@ const Register = () => {
   return (
     <div className="container login-page" style={{ maxWidth: '420px' }}>
       <div className="card login-card border-0 shadow-sm p-4 p-md-5">
-        <h1 className="h3 mb-4 text-center">Criar Conta</h1>
+        <h1 className="h3 mb-4 text-center">{t('createAccount')}</h1>
 
         <form onSubmit={handleSubmit}>
           {error && <div className="alert alert-danger py-2">{error}</div>}
 
           <div className="mb-3">
-            <label className="form-label">Nome</label>
+            <label className="form-label">{t('name')}</label>
             <input
               type="text"
               className="form-control"
@@ -56,7 +58,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Email</label>
+            <label className="form-label">{t('email')}</label>
             <input
               type="email"
               className="form-control"
@@ -67,7 +69,7 @@ const Register = () => {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Senha</label>
+            <label className="form-label">{t('password')}</label>
             <div className="password-field">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -81,8 +83,8 @@ const Register = () => {
                 type="button"
                 className="password-toggle"
                 onClick={() => setShowPassword((visible) => !visible)}
-                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-                title={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                aria-label={showPassword ? t('hidePassword') : t('showPassword')}
+                title={showPassword ? t('hidePassword') : t('showPassword')}
               >
                 {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
               </button>
@@ -90,7 +92,7 @@ const Register = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label">Confirmar senha</label>
+            <label className="form-label">{t('passwordConfirmation')}</label>
             <div className="password-field">
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
@@ -104,8 +106,8 @@ const Register = () => {
                 type="button"
                 className="password-toggle"
                 onClick={() => setShowConfirmPassword((visible) => !visible)}
-                aria-label={showConfirmPassword ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'}
-                title={showConfirmPassword ? 'Ocultar confirmação de senha' : 'Mostrar confirmação de senha'}
+                aria-label={showConfirmPassword ? t('hidePassword') : t('showPassword')}
+                title={showConfirmPassword ? t('hidePassword') : t('showPassword')}
               >
                 {showConfirmPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
               </button>
@@ -113,11 +115,11 @@ const Register = () => {
           </div>
 
           <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-            {loading ? 'Criando conta...' : 'Criar Conta'}
+            {loading ? t('creatingAccount') : t('createAccount')}
           </button>
 
           <p className="text-center mt-3 mb-0 small">
-            Já tem conta? <Link to="/login">Entrar</Link>
+            {t('language') === 'Idioma' ? 'Já tem conta?' : 'Already have an account?'} <Link to="/login">{t('enter')}</Link>
           </p>
         </form>
       </div>

@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom';
 import type { Product } from '../types/products';
+import { translateCategory, useLanguage } from '../context/LanguageContext';
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const { language } = useLanguage();
   const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0];
   const imageUrl = primaryImage
     ? `http://localhost:3001${primaryImage.image_url}`
-    : 'https://placehold.co/400x400?text=Sem+imagem';
+    : `https://placehold.co/400x400?text=${language === 'pt' ? 'Sem+imagem' : 'No+image'}`;
 
   return (
     <Link to={`/products/${product.id}`} className="text-decoration-none text-body">
@@ -21,7 +23,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           style={{ aspectRatio: '1 / 1', objectFit: 'cover' }}
         />
         <div className="card-body">
-          <p className="text-uppercase small text-secondary mb-1">{product.category}</p>
+          <p className="text-uppercase small text-secondary mb-1">{translateCategory(product.category, language)}</p>
           <h6 className="card-title mb-1">{product.name}</h6>
           <p className="fw-semibold mb-0">
             R$ {parseFloat(product.price).toFixed(2).replace('.', ',')}

@@ -3,11 +3,13 @@ import { Sun, Moon, Cart3, PersonCircle } from 'react-bootstrap-icons';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useCart } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { items } = useCart();
+  const { language, setLanguage, t } = useLanguage();
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -20,14 +22,25 @@ const Navbar = () => {
 
         <div className="d-flex align-items-center gap-3 ms-auto">
           <Link className="nav-link" to="/about">
-            Sobre Nós
+            {t('about')}
           </Link>
+
+          <select
+            className="form-select form-select-sm language-select"
+            value={language}
+            onChange={(event) => setLanguage(event.target.value as 'pt' | 'en')}
+            aria-label={t('language')}
+            title={t('language')}
+          >
+            <option value="pt">PT</option>
+            <option value="en">EN</option>
+          </select>
 
           <button
             className="btn btn-sm btn-outline-secondary theme-toggle"
             onClick={toggleTheme}
-            aria-label={theme === 'light' ? 'Ativar modo escuro' : 'Ativar modo claro'}
-            title={theme === 'light' ? 'Modo escuro' : 'Modo claro'}
+            aria-label={theme === 'light' ? t('themeDark') : t('themeLight')}
+            title={theme === 'light' ? t('themeDark') : t('themeLight')}
           >
             {theme === 'light' ? <Moon /> : <Sun />}
           </button>
@@ -45,10 +58,10 @@ const Navbar = () => {
             <div className="d-flex align-items-center gap-2">
               {user.role === 'admin' && (
                 <Link className="btn btn-sm btn-outline-secondary" to="/admin/products">
-                  Admin
+                  {t('admin')}
                 </Link>
               )}
-              <Link to="/profile" className="profile-nav-link" title="Meu perfil" aria-label="Meu perfil">
+              <Link to="/profile" className="profile-nav-link" title={t('myProfile')} aria-label={t('myProfile')}>
                 {user.avatar_url ? (
                   <img src={`http://localhost:3001${user.avatar_url}`} alt="" className="profile-nav-avatar" />
                 ) : (
@@ -57,12 +70,12 @@ const Navbar = () => {
                 <span className="small">{user.name}</span>
               </Link>
               <button className="btn btn-sm btn-outline-danger" onClick={logout}>
-                Sair
+                {t('logout')}
               </button>
             </div>
           ) : (
             <Link className="btn btn-sm btn-primary" to="/login">
-              Entrar
+              {t('enter')}
             </Link>
           )}
         </div>

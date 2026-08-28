@@ -2,20 +2,22 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Trash } from 'react-bootstrap-icons';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 
 const Cart = () => {
   const { items, updateQuantity, removeItem } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const subtotal = items.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
 
   if (!user) {
     return (
       <div className="container page-shell empty-state text-center">
-        <p>Você precisa estar logado para ver o carrinho.</p>
+        <p>{t('loginRequiredCart')}</p>
         <Link to="/login" className="btn btn-primary">
-          Entrar
+          {t('enter')}
         </Link>
       </div>
     );
@@ -24,9 +26,9 @@ const Cart = () => {
   if (items.length === 0) {
     return (
       <div className="container page-shell empty-state text-center">
-        <p className="text-secondary">Seu carrinho está vazio.</p>
+        <p className="text-secondary">{t('cartEmpty')}</p>
         <Link to="/" className="btn btn-primary">
-          Ver produtos
+          {t('viewProducts')}
         </Link>
       </div>
     );
@@ -34,8 +36,8 @@ const Cart = () => {
 
   return (
     <div className="container page-shell cart-page">
-      <p className="eyebrow mb-2">Seu pedido</p>
-      <h1 className="display-6 mb-4">Meu Carrinho</h1>
+      <p className="eyebrow mb-2">{t('orderSummary')}</p>
+      <h1 className="display-6 mb-4">{t('myCart')}</h1>
 
       <div className="row g-5">
         <div className="col-md-8">
@@ -45,7 +47,7 @@ const Cart = () => {
                 src={
                   item.image_url
                     ? `http://localhost:3001${item.image_url}`
-                    : 'https://placehold.co/80x80?text=Sem+imagem'
+                    : `https://placehold.co/80x80?text=${t('language') === 'Idioma' ? 'Sem+imagem' : 'No+image'}`
                 }
                 alt={item.name}
                 style={{ width: '80px', height: '80px', objectFit: 'cover' }}
@@ -82,14 +84,14 @@ const Cart = () => {
         <div className="col-md-4">
           <div className="card summary-card border-0 shadow-sm">
             <div className="card-body">
-              <h2 className="h6 mb-3">Resumo</h2>
+              <h2 className="h6 mb-3">{t('orderSummary')}</h2>
               <div className="d-flex justify-content-between mb-2">
-                <span className="text-secondary">Subtotal</span>
+                <span className="text-secondary">{t('subtotal')}</span>
                 <span>R$ {subtotal.toFixed(2).replace('.', ',')}</span>
               </div>
-              <p className="small text-secondary mb-3">Frete calculado no checkout</p>
+              <p className="small text-secondary mb-3">{t('freightAtCheckout')}</p>
               <button className="btn btn-primary w-100" onClick={() => navigate('/checkout')}>
-                Finalizar Compra
+                {t('finalizePurchase')}
               </button>
             </div>
           </div>

@@ -14,15 +14,17 @@ import AdminProducts from './pages/AdminProducts';
 import ProductForm from './pages/ProductForm';
 import Profile from './pages/Profile';
 import LoadingOverlay from './components/LoadingOverlay';
+import { LanguageProvider } from './context/LanguageContext';
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="d-flex flex-column min-vh-100">
-        <LoadingOverlay />
-        <Navbar />
-        <main className="flex-grow-1">
-          <Routes>
+    <LanguageProvider>
+      <BrowserRouter>
+        <div className="d-flex flex-column min-vh-100">
+          <LoadingOverlay />
+          <Navbar />
+          <main className="flex-grow-1">
+            <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -56,11 +58,12 @@ function App() {
                 </AdminRoute>
               }
             />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </BrowserRouter>
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </LanguageProvider>
   );
 }
 

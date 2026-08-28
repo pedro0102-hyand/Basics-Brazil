@@ -3,6 +3,7 @@ import api from '../services/api';
 import type { Product } from '../types/products';
 import ProductCard from '../components/ProductCard';
 import CategoryFilter from '../components/CategoryFilter';
+import { useLanguage } from '../context/LanguageContext';
 
 interface Category {
   category: string;
@@ -15,6 +16,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const { t } = useLanguage();
 
   useEffect(() => {
     api.get('/products/categories').then((res) => setCategories(res.data));
@@ -43,8 +45,8 @@ const Home = () => {
     <div className="container page-shell">
       <div className="page-heading text-center">
         <p className="eyebrow mb-2">Basics Brazil</p>
-        <h1 className="display-6 mb-2">Nossa Coleção</h1>
-        <p className="text-secondary mb-0">Peças essenciais para o seu dia a dia</p>
+        <h1 className="display-6 mb-2">{t('ourCollection')}</h1>
+        <p className="text-secondary mb-0">{t('aboutIntro').split('.')[0]}.</p>
       </div>
 
       <div className="row">
@@ -62,16 +64,16 @@ const Home = () => {
               type="text"
               className="form-control"
               style={{ maxWidth: '280px' }}
-              placeholder="Buscar produtos..."
+              placeholder={t('searchProducts')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
           {loading ? (
-            <p className="text-secondary">Carregando produtos...</p>
+            <p className="text-secondary">{t('loadingProducts')}</p>
           ) : products.length === 0 ? (
-            <p className="text-secondary">Nenhum produto encontrado.</p>
+            <p className="text-secondary">{t('noProducts')}</p>
           ) : (
             <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 product-grid">
               {products.map((product) => (

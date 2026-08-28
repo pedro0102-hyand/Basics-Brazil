@@ -6,11 +6,14 @@ import type { Product } from '../types/products';
 import type { ReviewsResponse, Comment } from '../types/review';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
+import { translateCategory } from '../context/LanguageContext';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const { addToCart } = useCart();
+  const { language, t } = useLanguage();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -52,7 +55,7 @@ const ProductDetail = () => {
     setAdding(true);
     try {
       await addToCart(product.id, quantity);
-      alert('Produto adicionado ao carrinho!');
+      alert(t('addToCart'));
     } finally {
       setAdding(false);
     }
@@ -60,7 +63,7 @@ const ProductDetail = () => {
 
   const handleRate = async (rating: number) => {
     if (!user) {
-      alert('Você precisa estar logado para avaliar.');
+      alert(t('loginRequiredProfile'));
       return;
     }
     setMyRating(rating);
@@ -70,7 +73,7 @@ const ProductDetail = () => {
 
   const handleSendComment = async () => {
     if (!user) {
-      alert('Você precisa estar logado para comentar.');
+      alert(t('loginRequiredProfile'));
       return;
     }
     if (!newComment.trim()) return;
@@ -84,8 +87,8 @@ const ProductDetail = () => {
     }
   };
 
-  if (loading) return <div className="container page-shell">Carregando...</div>;
-  if (!product) return <div className="container page-shell">Produto não encontrado.</div>;
+  if (loading) return <div className="container page-shell">{t('loading')}</div>;
+  if (!product) return <div className="container page-shell">{t('notFoundProduct')}</div>;
 
   return (
     <div className="container page-shell product-detail">
@@ -93,7 +96,7 @@ const ProductDetail = () => {
         <div className="col-md-6">
           <div className="product-image-frame">
           <img
-            src={selectedImage || 'https://placehold.co/500x500?text=Sem+imagem'}
+            src={selectedImage || `https://placehold.co/500x500?text=${t('language') === 'Idioma' ? 'Sem+imagem' : 'No+image'}`}
             alt={product.name}
             className="img-fluid rounded"
             style={{ aspectRatio: '1 / 1', objectFit: 'cover', width: '100%' }}
@@ -122,7 +125,7 @@ const ProductDetail = () => {
         </div>
 
         <div className="col-md-6">
-          <p className="text-uppercase small text-secondary mb-1">{product.category}</p>
+          <p className="text-uppercase small text-secondary mb-1">{translateCategory(product.category, language)}</p>
           <h1 className="display-6 mb-2">{product.name}</h1>
 
           {reviewsData && reviewsData.total_reviews > 0 && (
@@ -135,7 +138,7 @@ const ProductDetail = () => {
                 )
               )}
               <span className="small text-secondary">
-                {reviewsData.average_rating} ({reviewsData.total_reviews} avaliações)
+                {reviewsData.average_rating} ({reviewsData.total_reviews} {t('reviews').toLowerCase()})
               </span>
             </div>
           )}
@@ -148,8 +151,8 @@ const ProductDetail = () => {
 
           {(product.size || product.color) && (
             <div className="mb-4 small">
-              {product.size && <span className="me-3"><strong>Tamanho:</strong> {product.size}</span>}
-              {product.color && <span><strong>Cor:</strong> {product.color}</span>}
+              {product.size && <span className="me-3"><strong>{t('size')}:</strong> {product.size}</span>}
+              {product.color && <span><strong>{t('color')}:</strong> {product.color}</span>}
             </div>
           )}
 
@@ -169,14 +172,14 @@ const ProductDetail = () => {
               disabled={adding || product.stock_quantity === 0}
             >
               {product.stock_quantity === 0
-                ? 'Sem estoque'
+                ? (t('stock') === 'Estoque' ? 'Sem estoque' : 'Out of stock')
                 : adding
-                ? 'Adicionando...'
-                : 'Adicionar ao Carrinho'}
+                ? t('adding')
+                : t('addToCart')}
             </button>
           </div>
 
-          <p className="small text-secondary mb-0">{product.stock_quantity} em estoque</p>
+          <p className="small text-secondary mb-0">{product.stock_quantity} {t('stockAvailable')}</p>
         </div>
       </div>
 
@@ -184,10 +187,10 @@ const ProductDetail = () => {
 
       <div className="row g-5">
         <div className="col-md-6">
-          <h2 className="h5 section-title mb-3">Avaliações</h2>
+          <h2 className="h5 section-title mb-3">{t('reviews')}</h2>
 
           <div className="mb-4">
-            <p className="small mb-1">Sua avaliação:</p>
+            <p className="small mb-1">{t('myRating')}</p>
             <div>
               {[1, 2, 3, 4, 5].map((n) => (
                 <span key={n} style={{ cursor: 'pointer' }} onClick={() => handleRate(n)}>
@@ -202,7 +205,7 @@ const ProductDetail = () => {
           </div>
 
           {reviewsData?.reviews.length === 0 ? (
-            <p className="text-secondary small">Ainda não há avaliações.</p>
+            <p className="text-secondary small">{t('noReviews')}</p>
           ) : (
             <ul className="list-unstyled">
               {reviewsData?.reviews.map((r) => (
@@ -222,13 +225,13 @@ const ProductDetail = () => {
         </div>
 
         <div className="col-md-6">
-          <h2 className="h5 section-title mb-3">Comentários</h2>
+          <h2 className="h5 section-title mb-3">{t('comments')}</h2>
 
           <div className="mb-4">
             <textarea
               className="form-control mb-2"
               rows={2}
-              placeholder="Escreva um comentário..."
+              placeholder={t('commentPlaceholder')}
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
             />
@@ -237,12 +240,12 @@ const ProductDetail = () => {
               onClick={handleSendComment}
               disabled={sendingComment}
             >
-              {sendingComment ? 'Enviando...' : 'Comentar'}
+              {sendingComment ? t('sending') : t('sendComment')}
             </button>
           </div>
 
           {comments.length === 0 ? (
-            <p className="text-secondary small">Ainda não há comentários.</p>
+            <p className="text-secondary small">{t('noComments')}</p>
           ) : (
             <ul className="list-unstyled">
               {comments.map((c) => (

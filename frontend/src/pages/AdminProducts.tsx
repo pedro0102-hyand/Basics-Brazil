@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { PencilSquare, Trash, PlusCircle } from 'react-bootstrap-icons';
 import api from '../services/api';
 import type { Product } from '../types/products';
+import { translateCategory, useLanguage } from '../context/LanguageContext';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const { language, t } = useLanguage();
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -20,7 +22,7 @@ const AdminProducts = () => {
   }, []);
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Tem certeza que deseja excluir este produto?')) return;
+    if (!confirm(t('confirmDelete'))) return;
     await api.delete(`/products/${id}`);
     await fetchProducts();
   };
@@ -29,25 +31,25 @@ const AdminProducts = () => {
     <div className="container page-shell admin-page">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <p className="eyebrow mb-2">Painel de controle</p>
-          <h1 className="display-6 mb-0">Gerenciar Produtos</h1>
+          <p className="eyebrow mb-2">{t('adminPanel')}</p>
+          <h1 className="display-6 mb-0">{t('manageProducts')}</h1>
         </div>
         <Link to="/admin/products/new" className="btn btn-primary d-flex align-items-center gap-2">
-          <PlusCircle /> Novo Produto
+          <PlusCircle /> {t('newProduct')}
         </Link>
       </div>
 
       {loading ? (
-        <p>Carregando...</p>
+        <p>{t('loading')}</p>
       ) : (
         <div className="table-responsive admin-table-wrap">
           <table className="table align-middle">
             <thead>
               <tr>
-                <th>Nome</th>
-                <th>Categoria</th>
-                <th>Preço</th>
-                <th>Estoque</th>
+                <th>{t('name')}</th>
+                <th>{t('category')}</th>
+                <th>{t('total')}</th>
+                <th>{t('stock')}</th>
                 <th></th>
               </tr>
             </thead>
@@ -55,7 +57,7 @@ const AdminProducts = () => {
               {products.map((p) => (
                 <tr key={p.id}>
                   <td>{p.name}</td>
-                  <td>{p.category}</td>
+                  <td>{translateCategory(p.category, language)}</td>
                   <td>R$ {parseFloat(p.price).toFixed(2).replace('.', ',')}</td>
                   <td>{p.stock_quantity}</td>
                   <td className="text-end">

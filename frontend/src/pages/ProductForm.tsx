@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
 
 const ProductForm = () => {
   const { id } = useParams();
   const isEditing = Boolean(id);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -75,17 +77,17 @@ const ProductForm = () => {
 
   return (
     <div className="container page-shell product-form-page">
-      <p className="eyebrow mb-2">Catálogo</p>
-      <h1 className="display-6 mb-4">{isEditing ? 'Editar Produto' : 'Novo Produto'}</h1>
+      <p className="eyebrow mb-2">{t('catalog')}</p>
+      <h1 className="display-6 mb-4">{isEditing ? t('editProduct') : t('newProduct')}</h1>
 
       <form onSubmit={handleSubmit} className="form-surface">
         <div className="mb-3">
-          <label className="form-label">Nome</label>
+          <label className="form-label">{t('productName')}</label>
           <input className="form-control" value={name} onChange={(e) => setName(e.target.value)} required />
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Descrição</label>
+          <label className="form-label">{t('description')}</label>
           <textarea
             className="form-control"
             rows={3}
@@ -97,7 +99,7 @@ const ProductForm = () => {
 
         <div className="row g-3 mb-3">
           <div className="col-6">
-            <label className="form-label">Preço (R$)</label>
+            <label className="form-label">{t('total')} (R$)</label>
             <input
               type="number"
               step="0.01"
@@ -108,7 +110,7 @@ const ProductForm = () => {
             />
           </div>
           <div className="col-6">
-            <label className="form-label">Estoque</label>
+            <label className="form-label">{t('stock')}</label>
             <input
               type="number"
               className="form-control"
@@ -120,17 +122,17 @@ const ProductForm = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Categoria</label>
+          <label className="form-label">{t('category')}</label>
           <input className="form-control" value={category} onChange={(e) => setCategory(e.target.value)} required />
         </div>
 
         <div className="row g-3 mb-3">
           <div className="col-4">
-            <label className="form-label">Tamanho</label>
+            <label className="form-label">{t('size')}</label>
             <input className="form-control" value={size} onChange={(e) => setSize(e.target.value)} />
           </div>
           <div className="col-4">
-            <label className="form-label">Cor</label>
+            <label className="form-label">{t('color')}</label>
             <input className="form-control" value={color} onChange={(e) => setColor(e.target.value)} />
           </div>
           <div className="col-4">
@@ -146,7 +148,7 @@ const ProductForm = () => {
         </div>
 
         <div className="mb-4">
-          <label className="form-label">Imagem</label>
+          <label className="form-label">{t('image')}</label>
           <input
             type="file"
             accept="image/jpeg,image/png,image/webp"
@@ -156,7 +158,7 @@ const ProductForm = () => {
         </div>
 
         <button type="submit" className="btn btn-primary w-100" disabled={saving}>
-          {saving ? 'Salvando...' : 'Salvar'}
+          {saving ? t('saving') : t('save')}
         </button>
       </form>
     </div>

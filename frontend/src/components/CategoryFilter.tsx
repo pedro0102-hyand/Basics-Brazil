@@ -9,11 +9,14 @@ interface CategoryFilterProps {
   onSelect: (category: string) => void;
 }
 
+import { translateCategory, useLanguage } from '../context/LanguageContext';
+
 const CategoryFilter = ({ categories, selected, onSelect }: CategoryFilterProps) => {
+  const { language, t } = useLanguage();
   return (
     <div className="category-filter mb-4">
       <h2 className="h6 text-uppercase text-secondary mb-3" style={{ letterSpacing: '0.05em' }}>
-        Categorias
+        {t('categories')}
       </h2>
       <ul className="list-unstyled mb-0">
         <li className="mb-2">
@@ -21,7 +24,7 @@ const CategoryFilter = ({ categories, selected, onSelect }: CategoryFilterProps)
             className={`btn btn-link p-0 text-decoration-none ${selected === '' ? 'fw-semibold text-body' : 'text-secondary'}`}
             onClick={() => onSelect('')}
           >
-            Todas
+            {t('all')}
           </button>
         </li>
         {categories.map((cat) => (
@@ -32,7 +35,7 @@ const CategoryFilter = ({ categories, selected, onSelect }: CategoryFilterProps)
               }`}
               onClick={() => onSelect(cat.category)}
             >
-              {cat.category}
+              {translateCategory(cat.category, language)}
             </button>
             <span className="small text-secondary">{cat.count}</span>
           </li>

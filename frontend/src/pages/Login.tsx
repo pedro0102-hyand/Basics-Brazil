@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -21,7 +23,7 @@ const Login = () => {
       await login(email, password);
       navigate('/');
     } catch {
-      setError('Email ou senha inválidos.');
+      setError(t('loginInvalid'));
     } finally {
       setLoading(false);
     }
@@ -30,13 +32,13 @@ const Login = () => {
   return (
     <div className="container login-page" style={{ maxWidth: '420px' }}>
       <div className="card login-card border-0 shadow-sm p-4 p-md-5">
-        <h1 className="h3 mb-4 text-center">Entrar</h1>
+        <h1 className="h3 mb-4 text-center">{t('enter')}</h1>
 
         <form onSubmit={handleSubmit}>
           {error && <div className="alert alert-danger py-2">{error}</div>}
 
           <div className="mb-3">
-            <label className="form-label">Email</label>
+            <label className="form-label">{t('email')}</label>
             <input
               type="email"
               className="form-control"
@@ -47,7 +49,7 @@ const Login = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label">Senha</label>
+            <label className="form-label">{t('password')}</label>
             <div className="password-field">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -60,8 +62,8 @@ const Login = () => {
                 type="button"
                 className="password-toggle"
                 onClick={() => setShowPassword((visible) => !visible)}
-                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-                title={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                aria-label={showPassword ? t('hidePassword') : t('showPassword')}
+                title={showPassword ? t('hidePassword') : t('showPassword')}
               >
                 {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
               </button>
@@ -69,11 +71,11 @@ const Login = () => {
           </div>
 
           <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-            {loading ? 'Entrando...' : 'Entrar'}
+            {loading ? t('loggingIn') : t('enter')}
           </button>
 
           <p className="text-center mt-3 mb-0 small">
-            Não tem conta? <Link to="/register">Cadastre-se</Link>
+            {t('registerPrompt')} <Link to="/register">{t('register')}</Link>
           </p>
         </form>
       </div>
