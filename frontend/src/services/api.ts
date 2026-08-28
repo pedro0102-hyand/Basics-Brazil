@@ -3,9 +3,10 @@ import axios from 'axios';
 type RequestLoadingListener = (isStarting: boolean) => void;
 
 const requestLoadingListeners = new Set<RequestLoadingListener>();
+const apiBaseUrl = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:3001';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: apiBaseUrl,
 });
 
 api.interceptors.request.use((config) => {
