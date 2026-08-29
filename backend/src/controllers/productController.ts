@@ -9,20 +9,37 @@ export const getProducts = async (req: Request, res: Response) => {
   const { category, search } = req.query;
 
   try {
-    let query = 'SELECT * FROM products WHERE is_active = TRUE';
+    let query = `
+      SELECT
+        p.*,
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'id', pi.id,
+              'image_url', pi.image_url,
+              'is_primary', pi.is_primary
+            )
+            ORDER BY pi.is_primary DESC, pi.id ASC
+          ) FILTER (WHERE pi.id IS NOT NULL),
+          '[]'::json
+        ) AS images
+      FROM products p
+      LEFT JOIN product_images pi ON pi.product_id = p.id
+      WHERE p.is_active = TRUE
+    `;
     const params: string[] = [];
 
     if (category) {
       params.push(category as string);
-      query += ` AND category = $${params.length}`;
+      query += ` AND p.category = $${params.length}`;
     }
 
     if (search) {
       params.push(`%${search}%`);
-      query += ` AND name ILIKE $${params.length}`;
+      query += ` AND p.name ILIKE $${params.length}`;
     }
 
-    query += ' ORDER BY created_at DESC';
+    query += ' GROUP BY p.id ORDER BY p.created_at DESC';
 
     const result = await pool.query(query, params);
     res.json(result.rows);
@@ -157,11 +174,16 @@ export const addProductImage = async (req: AuthRequest, res: Response) => {
 
     const imageUrl = `/uploads/${req.file.filename}`;
 
+    await pool.query(
+      'UPDATE product_images SET is_primary = FALSE WHERE product_id = $1',
+      [id]
+    );
+
     const result = await pool.query(
       `INSERT INTO product_images (product_id, image_url, is_primary)
        VALUES ($1, $2, $3)
        RETURNING *`,
-      [id, imageUrl, false]
+      [id, imageUrl, true]
     );
 
     res.status(201).json(result.rows[0]);
