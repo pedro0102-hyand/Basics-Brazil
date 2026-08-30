@@ -16,9 +16,9 @@ const router = Router();
 router.get('/categories', getCategories);
 router.get('/', getProducts);
 router.get('/:id', getProductById);
-router.post('/', authenticate, authorize('admin'), createProduct);
+router.post('/', authenticate, authorize('customer', 'admin'), createProduct);
 router.put('/:id', authenticate, authorize('admin'), updateProduct);
 router.delete('/:id', authenticate, authorize('admin'), deleteProduct);
-router.post('/:id/images', authenticate, authorize('admin'), upload.single('image'), addProductImage);
+router.post('/:id/images', authenticate, authorize('customer', 'admin'), upload.single('image'), addProductImage);
 
 export default router;

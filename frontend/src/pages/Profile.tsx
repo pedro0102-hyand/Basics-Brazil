@@ -63,6 +63,11 @@ const Profile = () => {
             <Camera /> {saving ? t('sending') : t('addImage')}
           </label>
           <input id="avatar-upload" type="file" accept="image/jpeg,image/png,image/webp" className="visually-hidden" onChange={handleFileChange} disabled={saving} />
+          <div className="mt-3">
+            <Link to="/admin/products/new" className="btn btn-outline-primary d-inline-flex align-items-center gap-2">
+              + Cadastrar novo produto
+            </Link>
+          </div>
           {message && <p className="small text-secondary mt-3 mb-0">{message}</p>}
         </div>
       </div>

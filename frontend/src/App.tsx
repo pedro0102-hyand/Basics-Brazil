@@ -45,7 +45,7 @@ function App() {
             <Route
               path="/admin/products/new"
               element={
-                <AdminRoute>
+                <AdminRoute allowCustomer>
                   <ProductForm />
                 </AdminRoute>
               }
