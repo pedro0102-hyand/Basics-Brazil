@@ -5,10 +5,15 @@ import { calculateShippingCost } from '../utils/shipping';
 
 //
 export const calculateShipping = async (req: AuthRequest, res: Response) => {
-  const { cep } = req.body;
+  const { cep, shipping_method = 'standard' } = req.body;
 
   if (!cep) {
     return res.status(400).json({ message: 'CEP é obrigatório.' });
+  }
+
+  const allowedMethods = ['standard', 'express', 'pickup'];
+  if (!allowedMethods.includes(shipping_method)) {
+    return res.status(400).json({ message: 'Método de entrega inválido.' });
   }
 
   try {
@@ -26,12 +31,13 @@ export const calculateShipping = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ message: 'Carrinho vazio, não é possível calcular o frete.' });
     }
 
-    const shippingCost = calculateShippingCost(totalWeight);
+    const shippingCost = calculateShippingCost(totalWeight, shipping_method);
 
     res.json({
       cep,
       total_weight_kg: totalWeight,
       shipping_cost: shippingCost,
+      shipping_method,
     });
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });

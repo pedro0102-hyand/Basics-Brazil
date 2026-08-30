@@ -1,13 +1,18 @@
 import { Response } from 'express';
 import pool from '../config/database';
 import { AuthRequest } from '../middleware/auth';
-import { calculateShippingCost } from '../utils/shipping';
+import { calculateShippingCost, ShippingMethod } from '../utils/shipping';
 
 export const createOrder = async (req: AuthRequest, res: Response) => {
-  const { shipping_cep, payment_method } = req.body;
+  const { shipping_cep, payment_method = 'fake_card', shipping_method = 'standard' } = req.body;
 
   if (!shipping_cep) {
     return res.status(400).json({ message: 'shipping_cep é obrigatório.' });
+  }
+
+  const allowedMethods = ['standard', 'express', 'pickup'];
+  if (!allowedMethods.includes(shipping_method)) {
+    return res.status(400).json({ message: 'Método de entrega inválido.' });
   }
 
   const client = await pool.connect();
@@ -44,7 +49,7 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
       (sum, item) => sum + parseFloat(item.weight_kg) * item.quantity,
       0
     );
-    const shippingCost = calculateShippingCost(totalWeight);
+    const shippingCost = calculateShippingCost(totalWeight, shipping_method as ShippingMethod);
     const total = subtotal + shippingCost;
 
     const orderResult = await client.query(
