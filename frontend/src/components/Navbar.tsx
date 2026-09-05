@@ -52,8 +52,14 @@ const Navbar = () => {
             onClick={toggleTheme}
             aria-label={theme === 'light' ? t('themeDark') : t('themeLight')}
             title={theme === 'light' ? t('themeDark') : t('themeLight')}
+            aria-pressed={theme === 'dark'}
           >
-            {theme === 'light' ? <Moon /> : <Sun />}
+            <span className={theme === 'light' ? 'theme-icon active' : 'theme-icon'}>
+              <Sun size={14} aria-hidden="true" />
+            </span>
+            <span className={theme === 'dark' ? 'theme-icon active' : 'theme-icon'}>
+              <Moon size={14} aria-hidden="true" />
+            </span>
           </button>
 
           <Link className="nav-link position-relative navbar-cart-link" to="/cart">
