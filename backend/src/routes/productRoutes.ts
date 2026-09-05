@@ -9,7 +9,7 @@ import {
   getCategories,
 } from '../controllers/productController';
 import { authenticate, authorize } from '../middleware/auth';
-import { upload } from '../middleware/upload';
+import { upload, storeVerifiedImage } from '../middleware/upload';
 
 const router = Router();
 
@@ -19,6 +19,13 @@ router.get('/:id', getProductById);
 router.post('/', authenticate, authorize('customer', 'admin'), createProduct);
 router.put('/:id', authenticate, authorize('admin'), updateProduct);
 router.delete('/:id', authenticate, authorize('admin'), deleteProduct);
-router.post('/:id/images', authenticate, authorize('customer', 'admin'), upload.single('image'), addProductImage);
+router.post(
+  '/:id/images',
+  authenticate,
+  authorize('customer', 'admin'),
+  upload.single('image'),
+  storeVerifiedImage('product'),
+  addProductImage
+);
 
 export default router;
