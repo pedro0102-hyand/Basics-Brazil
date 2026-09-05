@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Sun, Moon, Cart3, PersonCircle } from 'react-bootstrap-icons';
+import { Sun, Moon, Cart3, PersonCircle, Translate } from 'react-bootstrap-icons';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useCart } from '../context/CartContext';
@@ -25,16 +25,27 @@ const Navbar = () => {
             {t('about')}
           </Link>
 
-          <select
-            className="form-select form-select-sm language-select"
-            value={language}
-            onChange={(event) => setLanguage(event.target.value as 'pt' | 'en')}
-            aria-label={t('language')}
-            title={t('language')}
-          >
-            <option value="pt">PT</option>
-            <option value="en">EN</option>
-          </select>
+          <div className="language-toggle" role="group" aria-label={t('language')}>
+            <Translate size={16} aria-hidden="true" />
+            <button
+              type="button"
+              className={language === 'pt' ? 'active' : ''}
+              onClick={() => setLanguage('pt')}
+              aria-pressed={language === 'pt'}
+              aria-label="Português"
+            >
+              PT
+            </button>
+            <button
+              type="button"
+              className={language === 'en' ? 'active' : ''}
+              onClick={() => setLanguage('en')}
+              aria-pressed={language === 'en'}
+              aria-label="English"
+            >
+              EN
+            </button>
+          </div>
 
           <button
             className="btn btn-sm btn-outline-secondary theme-toggle"
