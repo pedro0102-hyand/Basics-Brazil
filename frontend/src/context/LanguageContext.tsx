@@ -11,6 +11,8 @@ const categoryTranslations: Record<string, string> = {
   calças: 'Pants',
   camisa: 'Shirt',
   camiseta: 'T-Shirt',
+  cueca: 'Underwear',
+  cuecas: 'Underwear',
   jaqueta: 'Jacket',
   moletom: 'Sweatshirt',
   saia: 'Skirt',
