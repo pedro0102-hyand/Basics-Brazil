@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_DB: ${DB_NAME:-ecommerce_db}
       POSTGRES_USER: ${DB_USER:-ecommerce_user}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-change_me}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
     ports:
       - "5432:5432"
     volumes:
@@ -28,8 +28,8 @@ services:
       DB_PORT: ${DB_PORT:-5432}
       DB_NAME: ${DB_NAME:-ecommerce_db}
       DB_USER: ${DB_USER:-ecommerce_user}
-      DB_PASSWORD: ${DB_PASSWORD:-change_me}
-      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change_me}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?JWT_ACCESS_SECRET must be set}
     depends_on:
       db:
         condition: service_healthy
