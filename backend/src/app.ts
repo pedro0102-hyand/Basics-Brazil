@@ -11,6 +11,7 @@ import shippingRoutes from './routes/shippingRoutes';
 import reviewRoutes from './routes/reviewRoutes';
 import commentRoutes from './routes/commentRoutes';
 import orderRoutes from './routes/orderRoutes';
+import { errorHandler, sendServerError } from './middleware/errorHandler';
 
 const app = express();
 
@@ -38,8 +39,10 @@ app.get('/health/db', async (req, res) => {
     const result = await pool.query('SELECT NOW()');
     res.json({ status: 'ok', dbTime: result.rows[0].now });
   } catch (error) {
-    res.status(500).json({ status: 'error', message: (error as Error).message });
+    sendServerError(res, error, 'health.db');
   }
 });
+
+app.use(errorHandler);
 
 export default app;

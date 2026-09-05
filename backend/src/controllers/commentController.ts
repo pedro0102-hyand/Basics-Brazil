@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import pool from '../config/database';
 import { AuthRequest } from '../middleware/auth';
+import { sendServerError } from '../middleware/errorHandler';
 
 export const getComments = async (req: AuthRequest, res: Response) => {
   const { id } = req.params; // id do produto
@@ -17,7 +18,7 @@ export const getComments = async (req: AuthRequest, res: Response) => {
 
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'comments.get');
   }
 };
 
@@ -44,6 +45,6 @@ export const createComment = async (req: AuthRequest, res: Response) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'comments.create');
   }
 };

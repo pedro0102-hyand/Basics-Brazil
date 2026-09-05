@@ -2,6 +2,7 @@ import { Response } from 'express';
 import pool from '../config/database';
 import { AuthRequest } from '../middleware/auth';
 import { calculateShippingCost } from '../utils/shipping';
+import { sendServerError } from '../middleware/errorHandler';
 
 //
 export const calculateShipping = async (req: AuthRequest, res: Response) => {
@@ -40,6 +41,6 @@ export const calculateShipping = async (req: AuthRequest, res: Response) => {
       shipping_method,
     });
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'shipping.calculate');
   }
 };

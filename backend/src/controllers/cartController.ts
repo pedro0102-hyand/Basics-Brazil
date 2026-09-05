@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import pool from '../config/database';
 import { AuthRequest } from '../middleware/auth';
+import { sendServerError } from '../middleware/errorHandler';
 
 // Get the authenticated user's cart items
 export const getCart = async (req: AuthRequest, res: Response) => {
@@ -24,7 +25,7 @@ export const getCart = async (req: AuthRequest, res: Response) => {
 
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'cart.get');
   }
 };
 
@@ -61,7 +62,7 @@ export const addToCart = async (req: AuthRequest, res: Response) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'cart.add');
   }
 };
 
@@ -87,7 +88,7 @@ export const updateCartItem = async (req: AuthRequest, res: Response) => {
 
     res.json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'cart.update');
   }
 };
 
@@ -106,6 +107,6 @@ export const removeCartItem = async (req: AuthRequest, res: Response) => {
 
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'cart.remove');
   }
 };

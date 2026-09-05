@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import pool from '../config/database';
 import { generateAccessToken } from '../utils/jwt';
 import { AuthRequest } from '../middleware/auth';
+import { sendServerError } from '../middleware/errorHandler';
 
 const userFields = 'id, name, email, role, avatar_url, created_at';
 
@@ -31,7 +32,7 @@ export const register = async (req: Request, res: Response) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'auth.register');
   }
 };
 
@@ -69,7 +70,7 @@ export const login = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'auth.login');
   }
 };
 
@@ -87,7 +88,7 @@ export const me = async (req: AuthRequest, res: Response) => {
 
     res.json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'auth.me');
   }
 };
 
@@ -109,6 +110,6 @@ export const uploadAvatar = async (req: AuthRequest, res: Response) => {
 
     res.json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'auth.uploadAvatar');
   }
 };

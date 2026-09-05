@@ -2,6 +2,7 @@ import { Response } from 'express';
 import pool from '../config/database';
 import { AuthRequest } from '../middleware/auth';
 import { calculateShippingCost, ShippingMethod } from '../utils/shipping';
+import { sendServerError } from '../middleware/errorHandler';
 
 export const createOrder = async (req: AuthRequest, res: Response) => {
   const { shipping_cep, payment_method = 'fake_card', shipping_method = 'standard' } = req.body;
@@ -80,7 +81,7 @@ export const createOrder = async (req: AuthRequest, res: Response) => {
     res.status(201).json(order);
   } catch (error) {
     await client.query('ROLLBACK');
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'orders.create');
   } finally {
     client.release();
   }
@@ -94,7 +95,7 @@ export const getOrders = async (req: AuthRequest, res: Response) => {
     );
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'orders.list');
   }
 };
 
@@ -124,6 +125,6 @@ export const getOrderById = async (req: AuthRequest, res: Response) => {
       items: itemsResult.rows,
     });
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'orders.get');
   }
 };

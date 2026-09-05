@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import pool from '../config/database';
 import { AuthRequest } from '../middleware/auth';
+import { sendServerError } from '../middleware/errorHandler';
 
 // Controller para lidar com as operações relacionadas a avaliações (reviews) de produtos.
 export const getReviews = async (req: AuthRequest, res: Response) => {
@@ -28,7 +29,7 @@ export const getReviews = async (req: AuthRequest, res: Response) => {
       total_reviews: parseInt(avgResult.rows[0].total, 10),
     });
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'reviews.list');
   }
 };
 
@@ -58,6 +59,6 @@ export const createReview = async (req: AuthRequest, res: Response) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'reviews.create');
   }
 };

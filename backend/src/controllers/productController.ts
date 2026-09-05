@@ -3,6 +3,7 @@
 import { Request, Response } from 'express';
 import pool from '../config/database';
 import { AuthRequest } from '../middleware/auth';
+import { sendServerError } from '../middleware/errorHandler';
 
 // Get all products with optional filtering by category and search term
 export const getProducts = async (req: Request, res: Response) => {
@@ -44,7 +45,7 @@ export const getProducts = async (req: Request, res: Response) => {
     const result = await pool.query(query, params);
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'products.list');
   }
 };
 
@@ -72,7 +73,7 @@ export const getProductById = async (req: Request, res: Response) => {
       images: imagesResult.rows,
     });
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'products.get');
   }
 };
 
@@ -104,7 +105,7 @@ export const createProduct = async (req: AuthRequest, res: Response) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'products.create');
   }
 };
 
@@ -136,7 +137,7 @@ export const updateProduct = async (req: AuthRequest, res: Response) => {
 
     res.json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'products.update');
   }
 };
 
@@ -155,7 +156,7 @@ export const deleteProduct = async (req: AuthRequest, res: Response) => {
 
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'products.delete');
   }
 };
 
@@ -188,7 +189,7 @@ export const addProductImage = async (req: AuthRequest, res: Response) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'products.addImage');
   }
 };
 
@@ -203,6 +204,6 @@ export const getCategories = async (req: Request, res: Response) => {
     );
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    sendServerError(res, error, 'products.categories');
   }
 };
