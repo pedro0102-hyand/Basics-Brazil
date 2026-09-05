@@ -221,7 +221,30 @@ a:hover {
   font-size: 1.25rem;
 }
 
+.navbar-actions {
+  flex-shrink: 0;
+}
+
+.navbar-about-link {
+  width: 6.5rem;
+  text-align: center;
+}
+
+.navbar-cart-link {
+  width: 2rem;
+  text-align: center;
+}
+
+.auth-action {
+  min-width: 5.5rem;
+}
+
 .language-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.6rem;
+  flex: 0 0 5.6rem;
   display: inline-flex;
   align-items: center;
   gap: 0.15rem;
@@ -262,22 +285,13 @@ a:hover {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.theme-toggle:hover {
-  transform: rotate(12deg) scale(1.05);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 button,
 .btn {
-  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease,
-    color 0.2s ease, box-shadow 0.2s ease;
-}
-
-button:hover,
-.btn:hover {
-  transform: scale(1.03);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 /* Cards de produto */

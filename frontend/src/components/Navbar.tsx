@@ -20,8 +20,8 @@ const Navbar = () => {
           Basics Brazil
         </Link>
 
-        <div className="d-flex align-items-center gap-3 ms-auto">
-          <Link className="nav-link" to="/about">
+        <div className="navbar-actions d-flex align-items-center gap-3 ms-auto">
+          <Link className="nav-link navbar-about-link" to="/about">
             {t('about')}
           </Link>
 
@@ -56,7 +56,7 @@ const Navbar = () => {
             {theme === 'light' ? <Moon /> : <Sun />}
           </button>
 
-          <Link className="nav-link position-relative" to="/cart">
+          <Link className="nav-link position-relative navbar-cart-link" to="/cart">
             <Cart3 size={20} />
             {itemCount > 0 && (
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -80,12 +80,12 @@ const Navbar = () => {
                 )}
                 <span className="small">{user.name}</span>
               </Link>
-              <button className="btn btn-sm btn-outline-danger" onClick={logout}>
+              <button className="btn btn-sm btn-outline-danger auth-action" onClick={logout}>
                 {t('logout')}
               </button>
             </div>
           ) : (
-            <Link className="btn btn-sm btn-primary" to="/login">
+            <Link className="btn btn-sm btn-primary auth-action" to="/login">
               {t('enter')}
             </Link>
           )}
