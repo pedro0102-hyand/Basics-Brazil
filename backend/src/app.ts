@@ -14,8 +14,9 @@ import orderRoutes from './routes/orderRoutes';
 import { errorHandler, sendServerError } from './middleware/errorHandler';
 
 const app = express();
+const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:5173';
 
-app.use(cors());
+app.use(cors({ origin: frontendUrl }));
 app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(morgan('dev'));
 app.use(express.json());
